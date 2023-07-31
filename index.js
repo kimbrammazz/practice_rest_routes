@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const methodOverride = require("method-override");
 const { v4: uuid } = require("uuid");
 
 // to parse the body
@@ -8,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // To 'fake' put/patch/delete requests:
-// app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -50,7 +51,7 @@ app.get("/comments", (req, res) => {
 	res.render("comments/index", { comments });
 });
 
-// make new comments
+// make new comments - form
 app.get("/comments/new", (req, res) => {
 	res.render("comments/new");
 });
@@ -71,7 +72,25 @@ app.get("/comments/:id", (req, res) => {
 	res.render("comments/show", { comment });
 });
 
+// post edit comments form
+app.get("comments/:id/edit", (req, res) => {
+	const { id } = req.params;
+	const comment = comments.find((c) => c.id === id);
+	res.render("comments/edit", { comment });
+});
+
 // edit comment
+app.patch("/comments/:id", (req, res) => {
+	const { id } = req.params;
+	const foundComment = comments.find((c) => c.id === id);
+
+	//get new text from req.body
+	const newCommentText = req.body.comment;
+	//update the comment with the data from req.body:
+	foundComment.comment = newCommentText;
+	//redirect back to index (or wherever you want)
+	res.redirect("/comments");
+});
 
 app.listen(3000, () => {
 	console.log("listening on port 3000");
