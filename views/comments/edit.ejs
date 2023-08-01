@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<form>
+	<form action="/comments/<%= comment.id %>?_method=PATCH" method="POST">
 		<h1>Edit Comment</h1>
 		<h2>
 			<%= comment.username %>

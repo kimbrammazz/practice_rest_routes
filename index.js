@@ -88,7 +88,14 @@ app.patch("/comments/:id", (req, res) => {
 	const newCommentText = req.body.comment;
 	//update the comment with the data from req.body:
 	foundComment.comment = newCommentText;
-	//redirect back to index (or wherever you want)
+	//redirect back to index
+	res.redirect("/comments");
+});
+
+// delete comment
+app.delete("/comments/:id", (req, res) => {
+	const { id } = req.params;
+	comments = comments.filter((c) => c.id !== id);
 	res.redirect("/comments");
 });
 
