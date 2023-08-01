@@ -73,7 +73,7 @@ app.get("/comments/:id", (req, res) => {
 });
 
 // post edit comments form
-app.get("comments/:id/edit", (req, res) => {
+app.get("/comments/:id/edit", (req, res) => {
 	const { id } = req.params;
 	const comment = comments.find((c) => c.id === id);
 	res.render("comments/edit", { comment });
